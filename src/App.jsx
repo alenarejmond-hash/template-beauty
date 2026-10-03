@@ -15,26 +15,96 @@ const InstagramIcon = ({ className }) => (
 );
 
 // ==========================================
-// ⚙️ НАСТРОЙКИ КОНТЕНТА
+// ⚙️ НАСТРОЙКИ КОНТЕНТА И ПЕРЕВОДЫ
 // ==========================================
-const CONTENT = {
-  bgImage: '/bg-beauty.webp', // ФОН: файл bg-nail.jpg в папке public
-  avatar: '/avatar-beauty.webp', // АВАТАР: файл avatar-nail.jpg в папке public
-  badge: 'Beauty Space',
-  name1: 'АЛИНА',
-  name2: 'РОУЗ',
-  role: 'Бьюти-Эксперт',
-  status: 'Запись открыта',
-  username: '@alina_beauty',
-  subUsername: 'Premium Aesthetics',
-  location: 'Ереван, Центр',
-  service1: 'Премиум материалы и 100% стерильность',
-  service2: 'Приватная эстетичная студия',
-  service3: 'Обучение и авторские техники',
+const ASSETS = {
+  bgImage: '/bg-beauty.webp',
+  avatar: '/avatar-beauty.webp',
   waLink: 'https://wa.me/79990000000',
   instLink: 'https://instagram.com/твой_юзернейм',
-  actionText: 'Связаться с мастером',
-  actionLink: 'https://wa.me/79990000000'
+  phone: '+79990000000',
+  mapLink: 'https://maps.google.com/?q=Yerevan,Center' // <-- Ссылка на карту
+};
+
+const TRANSLATIONS = {
+  RU: {
+    badge: 'Beauty Space',
+    name1: 'АЛИНА',
+    name2: 'РОУЗ',
+    role: 'Бьюти-Эксперт',
+    status: 'Запись открыта',
+    username: '@alina_beauty',
+    subUsername: 'Premium Aesthetics',
+    location: 'Ереван, Центр',
+    expertise: 'Экспертиза',
+    visit: 'Визит',
+    service1: 'Премиум материалы и 100% стерильность',
+    service2: 'Приватная эстетичная студия',
+    service3: 'Обучение и авторские техники',
+    locLabel: 'Локация',
+    locText: 'Центр, удобная закрытая парковка',
+    timeLabel: 'Время',
+    timeText: '10:00 — 20:00 (Вт–Вс), строго по записи',
+    serviceLabel: 'Сервис',
+    serviceText: 'Авторский кофе, зона отдыха, Wi-Fi',
+    shareTitle: 'Поделиться визиткой',
+    shareDesc: 'Дайте отсканировать QR-код или отправьте ссылку напрямую.',
+    copy: 'Копировать',
+    copied: 'Скопировано!',
+    share: 'Отправить'
+  },
+  EN: {
+    badge: 'Beauty Space',
+    name1: 'ALINA',
+    name2: 'ROSE',
+    role: 'Beauty Expert',
+    status: 'Booking Open',
+    username: '@alina_beauty',
+    subUsername: 'Premium Aesthetics',
+    location: 'Yerevan, Center',
+    expertise: 'Expertise',
+    visit: 'Visit',
+    service1: 'Premium materials & 100% sterile',
+    service2: 'Private aesthetic studio',
+    service3: 'Training & signature techniques',
+    locLabel: 'Location',
+    locText: 'Center, convenient private parking',
+    timeLabel: 'Hours',
+    timeText: '10:00 — 20:00 (Tue–Sun), by appointment only',
+    serviceLabel: 'Amenities',
+    serviceText: 'Signature coffee, lounge area, Wi-Fi',
+    shareTitle: 'Share Contact Card',
+    shareDesc: 'Let someone scan the QR code or send the link directly.',
+    copy: 'Copy',
+    copied: 'Copied!',
+    share: 'Share'
+  },
+  AM: {
+    badge: 'Beauty Space',
+    name1: 'ԱԼԻՆԱ',
+    name2: 'ՌՈՈՒԶ',
+    role: 'Բյութի Էքսպերտ',
+    status: 'Գրանցումը բաց է',
+    username: '@alina_beauty',
+    subUsername: 'Premium Aesthetics',
+    location: 'Երևան, Կենտրոն',
+    expertise: 'Ծառայություններ',
+    visit: 'Այց',
+    service1: 'Պրեմիում նյութեր և 100% ստերիլություն',
+    service2: 'Պրիվատ էսթետիկ ստուդիա',
+    service3: 'Ուսուցում և հեղինակային տեխնիկաներ',
+    locLabel: 'Հասցե',
+    locText: 'Կենտրոն, հարմարավետ փակ կայանատեղի',
+    timeLabel: 'Ժամեր',
+    timeText: '10:00 — 20:00 (Երք–Կիր), նախնական գրանցմամբ',
+    serviceLabel: 'Սպասարկում',
+    serviceText: 'Հեղինակային սուրճ, հանգստի գոտի, Wi-Fi',
+    shareTitle: 'Կիսվել այցեքարտով',
+    shareDesc: 'Թույլ տվեք սկանավորել QR-կոդը կամ ուղարկեք հղումը։',
+    copy: 'Պատճենել',
+    copied: 'Պատճենված է',
+    share: 'Ուղարկել'
+  }
 };
 
 // ==========================================
@@ -178,7 +248,8 @@ const BurnRevealImage = ({ src, className, style, imgClassName = "" }) => {
   };
 
   return (
-    <div className={`absolute inset-0 pointer-events-none rounded-[2.5rem] ${className}`} style={{ ...style, clipPath: 'inset(0 round 2.5rem)', WebkitClipPath: 'inset(0 round 2.5rem)' }}>
+    // 🍏 Safari Fix: замена нестабильного clipPath на маску
+    <div className={`absolute inset-0 pointer-events-none rounded-[2.5rem] overflow-hidden ${className}`} style={{ ...style, WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
       <div 
         className={`absolute inset-0 bg-cover bg-center smooth-mask-wipe rounded-[2.5rem] ${imgClassName}`}
         style={{ backgroundImage: `url(${src})` }}
@@ -198,43 +269,57 @@ const BurnRevealImage = ({ src, className, style, imgClassName = "" }) => {
 // ==========================================
 // 🌸 КОМПОНЕНТ ВИЗИТКИ (BEAUTY SPACE)
 // ==========================================
-const BeautyCard = () => {
-  const [view, setView] = useState('services'); // Состояние для переключателя
+const BeautyCard = ({ lang }) => {
+  const [view, setView] = useState('services');
+  const t = TRANSLATIONS[lang] || TRANSLATIONS['RU'];
 
   return (
     <>
       {/* ЛИЦЕВАЯ СТОРОНА */}
-      <div className="absolute inset-0 w-full h-full card-backface-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(244,114,182,0.3)] overflow-hidden bg-black text-white flex flex-col p-6 group-hover:shadow-[0_20px_80px_rgba(244,114,182,0.5)] transition-shadow duration-700">
-        <div className="absolute inset-0 bg-gradient-to-tr from-rose-900 via-pink-800 to-amber-700/50 opacity-80 mix-blend-screen"></div>
+      <div className="absolute inset-0 w-full h-full card-backface-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(244,114,182,0.3)] group-hover:shadow-[0_20px_80px_rgba(244,114,182,0.5)] transition-shadow duration-700 bg-[#0a0507]">
         
-        {/* Темный градиент для контраста */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-rose-950/50 to-transparent"></div>
-        
-        {/* Сгорающий фон */}
-        <BurnRevealImage src={CONTENT.bgImage} className="opacity-40 grayscale" />
-        
-        <div className="relative z-10 flex flex-col h-full justify-between">
-          <div className="flex justify-between items-start">
-            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-pink-300/30 flex items-center gap-2 shadow-[0_0_15px_rgba(244,114,182,0.2)]">
-              <Sparkles className="w-4 h-4 text-pink-300" />
-              <span className="text-xs font-medium tracking-widest uppercase text-pink-50">{CONTENT.badge}</span>
-            </div>
-            <Droplets className="w-8 h-8 text-pink-200/80 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)]" />
-          </div>
+        {/* 🍏 ФИКС ДЛЯ SAFARI: жесткая обрезка углов отдельным внутренним слоем */}
+        <div className="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden" style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
+          
+          {/* Базовая подложка */}
+          <div className="absolute inset-0 bg-[#0a0507]"></div>
 
-          <div className="text-center pb-2">
-            <h2 className="text-3xl sm:text-4xl leading-tight font-serif font-light mb-1 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-100 via-white to-rose-200 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
-              {CONTENT.name1}
-              <br />
-              {CONTENT.name2}
-            </h2>
-            <div className="flex flex-col items-center gap-2 mt-3">
-              <p className="text-pink-200 font-serif font-medium text-[10px] uppercase tracking-[0.3em] bg-black/40 px-4 py-1.5 rounded-full border border-pink-300/30">
-                {CONTENT.role}
-              </p>
-              <div className="flex items-center gap-1.5 mt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(251,113,133,0.8)]"></span>
-                <span className="text-[8px] font-bold uppercase tracking-widest text-rose-200">{CONTENT.status}</span>
+          {/* Сгорающий фон - ТЕПЕРЬ ЯРКИЙ И СОЧНЫЙ (убраны grayscale и opacity-40) */}
+          <BurnRevealImage 
+            src={ASSETS.bgImage} 
+            className="opacity-100" 
+          />
+          
+          {/* Легкий бьюти-тонирующий слой (cinematic glow) */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/20 via-transparent to-amber-200/10 mix-blend-overlay pointer-events-none"></div>
+          
+          {/* Темные градиенты для идеального контраста белого текста */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0507] via-[#0a0507]/50 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0507]/30 via-transparent to-transparent pointer-events-none"></div>
+          
+          <div className="relative z-10 flex flex-col h-full justify-between p-[clamp(1rem,5cqw,1.5rem)] text-white">
+            <div className="flex justify-between items-start">
+              <div className="bg-[#151515]/95 sm:bg-white/10 sm:backdrop-blur-md px-[clamp(0.6rem,3cqw,1rem)] py-[clamp(0.2rem,1.5cqw,0.5rem)] rounded-full border border-pink-300/30 flex items-center gap-[clamp(0.25rem,1.5cqw,0.5rem)] shadow-[0_0_15px_rgba(244,114,182,0.2)]">
+                <Sparkles className="w-[clamp(0.75rem,3cqw,1rem)] h-[clamp(0.75rem,3cqw,1rem)] text-pink-300" />
+                <span className="text-[clamp(0.6rem,2.5cqw,0.75rem)] font-medium tracking-widest uppercase text-pink-50">{t.badge}</span>
+              </div>
+              <Droplets className="w-[clamp(1.5rem,6cqw,2rem)] h-[clamp(1.5rem,6cqw,2rem)] text-pink-200/80 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)]" />
+            </div>
+
+            <div className="text-center pb-[clamp(0.25rem,1.5cqw,0.5rem)]">
+              <h2 className="text-[clamp(1.5rem,8cqw,2.25rem)] leading-tight font-serif font-light mb-[clamp(0.125rem,1cqw,0.25rem)] uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-100 via-white to-rose-200 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+                {t.name1}
+                <br />
+                {t.name2}
+              </h2>
+              <div className="flex flex-col items-center gap-[clamp(0.25rem,1.5cqw,0.5rem)] mt-[clamp(0.5rem,2.5cqw,0.75rem)]">
+                <p className="text-pink-200 font-serif font-medium text-[clamp(0.5rem,2.2cqw,0.625rem)] uppercase tracking-[0.3em] bg-[#151515]/95 sm:bg-black/40 px-[clamp(0.6rem,3cqw,1rem)] py-[clamp(0.2rem,1cqw,0.375rem)] rounded-full border border-pink-300/30">
+                  {t.role}
+                </p>
+                <div className="flex items-center gap-[clamp(0.2rem,1.2cqw,0.375rem)] mt-[clamp(0.125rem,1cqw,0.25rem)]">
+                  <span className="w-[clamp(0.2rem,1cqw,0.375rem)] h-[clamp(0.2rem,1cqw,0.375rem)] rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(251,113,133,0.8)]"></span>
+                  <span className="text-[clamp(0.4rem,1.8cqw,0.5rem)] font-bold uppercase tracking-widest text-rose-200">{t.status}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -242,114 +327,118 @@ const BeautyCard = () => {
       </div>
 
       {/* ОБРАТНАЯ СТОРОНА (Premium Silk & Rose Gold) */}
-      <div className="absolute inset-0 w-full h-full card-backface-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(244,114,182,0.3)] overflow-hidden flex flex-col text-white border border-rose-900/50 bg-[#0a0507]" style={{ transform: 'rotateY(180deg)' }}>
+      <div className="absolute inset-0 w-full h-full card-backface-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(244,114,182,0.3)] border border-rose-900/50 bg-[#0a0507]" style={{ transform: 'rotateY(180deg)' }}>
         
-        {/* Обертка для фона */}
-        <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden pointer-events-none" style={{ transform: 'translateZ(0)' }}>
-          {/* Глубокий премиальный фон с ликвид-свечением */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2a0a18] via-[#11050a] to-[#000000] opacity-90 z-0"></div>
-          <div className="absolute -top-10 -left-10 w-64 h-64 bg-rose-600/20 blur-[70px] rounded-full z-0 mix-blend-screen"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-56 h-56 bg-amber-500/10 blur-[60px] rounded-full z-0 mix-blend-screen"></div>
-        </div>
-
-        <div className="relative z-10 flex flex-col h-full p-6">
+        {/* 🍏 ФИКС ДЛЯ SAFARI: жесткая обрезка углов */}
+        <div className="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden" style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
           
-          {/* Header */}
-          <div className="flex flex-col items-center mt-2">
-            {/* Изящное кольцо из розового золота вокруг аватара */}
-            <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-br from-amber-200 via-rose-400 to-pink-300 shadow-[0_0_20px_rgba(244,114,182,0.2)] mb-3">
-              <img src={CONTENT.avatar} alt={CONTENT.name1} className="w-full h-full object-cover rounded-full border-[2px] border-[#0a0507]" />
-            </div>
-            <h3 className="text-lg font-serif font-light tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-rose-50 to-rose-200 uppercase leading-none mb-1.5">{CONTENT.username}</h3>
-            <p className="text-amber-200/70 text-[8px] uppercase tracking-[0.3em] font-medium">{CONTENT.subUsername}</p>
-            
-            {/* Тонкая линия локации */}
-            <div className="flex items-center gap-1.5 mt-3 border-b border-rose-500/30 pb-1 px-2">
-              <MapPin className="w-2.5 h-2.5 text-rose-400" />
-              <span className="text-[8px] font-medium text-rose-100/70 uppercase tracking-widest">{CONTENT.location}</span>
-            </div>
+          {/* Обертка для фона */}
+          <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden pointer-events-none" style={{ transform: 'translateZ(0)' }}>
+            {/* Глубокий премиальный фон с ликвид-свечением */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2a0a18] via-[#11050a] to-[#000000] opacity-90 z-0"></div>
+            <div className="absolute -top-10 -left-10 w-64 h-64 bg-rose-600/20 blur-[70px] rounded-full z-0 mix-blend-normal sm:mix-blend-screen"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-56 h-56 bg-amber-500/10 blur-[60px] rounded-full z-0 mix-blend-normal sm:mix-blend-screen"></div>
           </div>
 
-          {/* Воздушные табы (Переключатель) */}
-          <div className="flex justify-center gap-6 my-5 relative z-20 no-tilt cursor-default">
-            <button 
-              onClick={(e) => { e.stopPropagation(); setView('services'); }} 
-              className={`pb-1 text-[9px] uppercase tracking-[0.2em] transition-all duration-500 relative ${view === 'services' ? 'text-rose-50 font-bold' : 'text-rose-300/40 hover:text-rose-200/80'}`}
-            >
-              Экспертиза
-              {view === 'services' && <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-rose-300 to-transparent shadow-[0_0_8px_rgba(251,113,133,0.8)]"></span>}
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); setView('contacts'); }} 
-              className={`pb-1 text-[9px] uppercase tracking-[0.2em] transition-all duration-500 relative ${view === 'contacts' ? 'text-rose-50 font-bold' : 'text-rose-300/40 hover:text-rose-200/80'}`}
-            >
-              Визит
-              {view === 'contacts' && <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-rose-300 to-transparent shadow-[0_0_8px_rgba(251,113,133,0.8)]"></span>}
-            </button>
-          </div>
-
-          {/* Контейнер контента */}
-          <div className="flex-1 w-full relative overflow-hidden mb-2">
+          <div className="relative z-10 flex flex-col h-full p-[clamp(1rem,5cqw,1.5rem)] text-white">
             
-            {/* Вкладка 1: Услуги (Экспертиза) */}
-            <div className={`absolute inset-0 flex flex-col gap-3 justify-center transition-all duration-700 ease-in-out ${view === 'services' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
-              {[CONTENT.service1, CONTENT.service2, CONTENT.service3].map((service, idx) => (
-                <div key={idx} className="bg-black/40 backdrop-blur-md border border-rose-500/10 rounded-xl p-4 flex items-center gap-3.5 shadow-inner relative overflow-hidden group">
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
-                  <div className="w-1.5 h-1.5 shrink-0 rounded-full bg-rose-300/80 shadow-[0_0_8px_rgba(251,113,133,0.8)] ml-1"></div>
-                  <span className="font-serif font-light text-[12px] leading-tight tracking-wide text-rose-50/90">{service}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Вкладка 2: Визит (Информация) */}
-            <div className={`absolute inset-0 flex flex-col gap-3 justify-center transition-all duration-700 ease-in-out ${view === 'contacts' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
+            {/* Header */}
+            <div className="flex flex-col items-center mt-[clamp(0.25rem,1.5cqw,0.5rem)]">
+              {/* Изящное кольцо из розового золота вокруг аватара */}
+              <div className="w-[clamp(3rem,12cqw,4rem)] h-[clamp(3rem,12cqw,4rem)] rounded-full p-[clamp(1px,0.5cqw,2px)] bg-gradient-to-br from-amber-200 via-rose-400 to-pink-300 shadow-[0_0_20px_rgba(244,114,182,0.2)] mb-[clamp(0.5rem,2.5cqw,0.75rem)]">
+                <img src={ASSETS.avatar} alt={t.name1} className="w-full h-full object-cover rounded-full border-[clamp(1px,0.5cqw,2px)] border-[#0a0507]" />
+              </div>
+              <h3 className="text-[clamp(1rem,4.5cqw,1.125rem)] font-serif font-light tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-rose-50 to-rose-200 uppercase leading-none mb-[clamp(0.2rem,1.2cqw,0.375rem)]">{t.username}</h3>
+              <p className="text-amber-200/70 text-[clamp(0.4rem,1.8cqw,0.5rem)] uppercase tracking-[0.3em] font-medium">{t.subUsername}</p>
               
-              <div className="bg-black/40 backdrop-blur-md border border-rose-500/10 rounded-xl p-3.5 flex flex-col gap-1 shadow-inner relative overflow-hidden group">
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <MapPin className="w-3.5 h-3.5 text-rose-300 shrink-0 ml-1" />
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-rose-300/60 font-medium">Локация</span>
-                </div>
-                <span className="font-serif font-light text-[12px] leading-tight text-rose-50/90 pl-6">Центр, удобная закрытая парковка</span>
+              {/* Тонкая линия локации (Теперь ссылка) */}
+              <a href={ASSETS.mapLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="flex items-center gap-[clamp(0.2rem,1.2cqw,0.375rem)] mt-[clamp(0.5rem,2.5cqw,0.75rem)] border-b border-rose-500/30 pb-[clamp(0.125rem,1cqw,0.25rem)] px-[clamp(0.25rem,1.5cqw,0.5rem)] hover:border-rose-400 transition-colors cursor-pointer relative z-20 no-tilt group">
+                <MapPin className="w-[clamp(0.4rem,2cqw,0.625rem)] h-[clamp(0.4rem,2cqw,0.625rem)] text-rose-400 group-hover:text-rose-300 transition-colors" />
+                <span className="text-[clamp(0.4rem,1.8cqw,0.5rem)] font-medium text-rose-100/70 group-hover:text-rose-50 uppercase tracking-widest transition-colors">{t.location}</span>
+              </a>
+            </div>
+
+            {/* Воздушные табы (Переключатель) */}
+            <div className="flex justify-center gap-[clamp(1.5rem,6cqw,2rem)] mt-[clamp(1.25rem,5cqw,1.75rem)] mb-[clamp(0.75rem,4cqw,1.25rem)] relative z-20 no-tilt cursor-default">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setView('services'); }} 
+                className={`pb-[clamp(0.125rem,1cqw,0.25rem)] text-[clamp(0.55rem,2.5cqw,0.7rem)] uppercase tracking-[0.2em] transition-all duration-500 relative ${view === 'services' ? 'text-rose-50 font-bold' : 'text-rose-300/60 hover:text-rose-200/90'}`}
+              >
+                {t.expertise}
+                {view === 'services' && <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-rose-300 to-transparent shadow-[0_0_8px_rgba(251,113,133,0.8)] rounded-full"></span>}
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setView('contacts'); }} 
+                className={`pb-[clamp(0.125rem,1cqw,0.25rem)] text-[clamp(0.55rem,2.5cqw,0.7rem)] uppercase tracking-[0.2em] transition-all duration-500 relative ${view === 'contacts' ? 'text-rose-50 font-bold' : 'text-rose-300/60 hover:text-rose-200/90'}`}
+              >
+                {t.visit}
+                {view === 'contacts' && <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-rose-300 to-transparent shadow-[0_0_8px_rgba(251,113,133,0.8)] rounded-full"></span>}
+              </button>
+            </div>
+
+            {/* Контейнер контента */}
+            <div className="flex-1 w-full relative overflow-hidden mb-[clamp(0.25rem,1.5cqw,0.5rem)]">
+              
+              {/* Вкладка 1: Услуги (Экспертиза) */}
+              <div className={`absolute inset-0 flex flex-col gap-[clamp(0.5rem,2.5cqw,0.75rem)] justify-center transition-all duration-700 ease-in-out ${view === 'services' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
+                {[t.service1, t.service2, t.service3].map((service, idx) => (
+                  <div key={idx} className="bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/10 rounded-xl p-[clamp(0.75rem,3cqw,1rem)] flex items-center gap-[clamp(0.6rem,2.8cqw,0.875rem)] shadow-inner relative overflow-hidden group">
+                    <div className="absolute left-0 top-0 bottom-0 w-[clamp(1px,0.5cqw,2px)] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
+                    <div className="w-[clamp(0.2rem,1cqw,0.375rem)] h-[clamp(0.2rem,1cqw,0.375rem)] shrink-0 rounded-full bg-rose-300/80 shadow-[0_0_8px_rgba(251,113,133,0.8)] ml-[clamp(0.125rem,1cqw,0.25rem)]"></div>
+                    <span className="font-serif font-light text-[clamp(0.6rem,2.8cqw,0.75rem)] leading-tight tracking-wide text-rose-50/90">{service}</span>
+                  </div>
+                ))}
               </div>
 
-              <div className="bg-black/40 backdrop-blur-md border border-rose-500/10 rounded-xl p-3.5 flex flex-col gap-1 shadow-inner relative overflow-hidden group">
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <Activity className="w-3.5 h-3.5 text-rose-300 shrink-0 ml-1" />
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-rose-300/60 font-medium">Время</span>
+              {/* Вкладка 2: Визит (Информация) */}
+              <div className={`absolute inset-0 flex flex-col gap-[clamp(0.5rem,2.5cqw,0.75rem)] justify-center transition-all duration-700 ease-in-out ${view === 'contacts' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
+                
+                <div className="bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/10 rounded-xl p-[clamp(0.6rem,2.8cqw,0.875rem)] flex flex-col gap-[clamp(0.125rem,1cqw,0.25rem)] shadow-inner relative overflow-hidden group">
+                  <div className="absolute left-0 top-0 bottom-0 w-[clamp(1px,0.5cqw,2px)] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
+                  <div className="flex items-center gap-[clamp(0.25rem,1.5cqw,0.5rem)] mb-[clamp(0.0625rem,0.5cqw,0.125rem)]">
+                    <MapPin className="w-[clamp(0.6rem,2.5cqw,0.875rem)] h-[clamp(0.6rem,2.5cqw,0.875rem)] text-rose-300 shrink-0 ml-[clamp(0.125rem,1cqw,0.25rem)]" />
+                    <span className="text-[clamp(0.45rem,2cqw,0.5625rem)] uppercase tracking-[0.2em] text-rose-300/60 font-medium">{t.locLabel}</span>
+                  </div>
+                  <span className="font-serif font-light text-[clamp(0.6rem,2.8cqw,0.75rem)] leading-tight text-rose-50/90 pl-[clamp(1rem,4cqw,1.5rem)]">{t.locText}</span>
                 </div>
-                <span className="font-serif font-light text-[12px] leading-tight text-rose-50/90 pl-6">10:00 — 20:00 (Вт–Вс), строго по записи</span>
-              </div>
 
-              <div className="bg-black/40 backdrop-blur-md border border-rose-500/10 rounded-xl p-3.5 flex flex-col gap-1 shadow-inner relative overflow-hidden group">
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <Sparkles className="w-3.5 h-3.5 text-rose-300 shrink-0 ml-1" />
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-rose-300/60 font-medium">Сервис</span>
+                <div className="bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/10 rounded-xl p-[clamp(0.6rem,2.8cqw,0.875rem)] flex flex-col gap-[clamp(0.125rem,1cqw,0.25rem)] shadow-inner relative overflow-hidden group">
+                  <div className="absolute left-0 top-0 bottom-0 w-[clamp(1px,0.5cqw,2px)] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
+                  <div className="flex items-center gap-[clamp(0.25rem,1.5cqw,0.5rem)] mb-[clamp(0.0625rem,0.5cqw,0.125rem)]">
+                    <Activity className="w-[clamp(0.6rem,2.5cqw,0.875rem)] h-[clamp(0.6rem,2.5cqw,0.875rem)] text-rose-300 shrink-0 ml-[clamp(0.125rem,1cqw,0.25rem)]" />
+                    <span className="text-[clamp(0.45rem,2cqw,0.5625rem)] uppercase tracking-[0.2em] text-rose-300/60 font-medium">{t.timeLabel}</span>
+                  </div>
+                  <span className="font-serif font-light text-[clamp(0.6rem,2.8cqw,0.75rem)] leading-tight text-rose-50/90 pl-[clamp(1rem,4cqw,1.5rem)]">{t.timeText}</span>
                 </div>
-                <span className="font-serif font-light text-[12px] leading-tight text-rose-50/90 pl-6">Авторский кофе, зона отдыха, Wi-Fi</span>
+
+                <div className="bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/10 rounded-xl p-[clamp(0.6rem,2.8cqw,0.875rem)] flex flex-col gap-[clamp(0.125rem,1cqw,0.25rem)] shadow-inner relative overflow-hidden group">
+                  <div className="absolute left-0 top-0 bottom-0 w-[clamp(1px,0.5cqw,2px)] bg-gradient-to-b from-amber-300/50 to-rose-400/50"></div>
+                  <div className="flex items-center gap-[clamp(0.25rem,1.5cqw,0.5rem)] mb-[clamp(0.0625rem,0.5cqw,0.125rem)]">
+                    <Sparkles className="w-[clamp(0.6rem,2.5cqw,0.875rem)] h-[clamp(0.6rem,2.5cqw,0.875rem)] text-rose-300 shrink-0 ml-[clamp(0.125rem,1cqw,0.25rem)]" />
+                    <span className="text-[clamp(0.45rem,2cqw,0.5625rem)] uppercase tracking-[0.2em] text-rose-300/60 font-medium">{t.serviceLabel}</span>
+                  </div>
+                  <span className="font-serif font-light text-[clamp(0.6rem,2.8cqw,0.75rem)] leading-tight text-rose-50/90 pl-[clamp(1rem,4cqw,1.5rem)]">{t.serviceText}</span>
+                </div>
+
               </div>
 
             </div>
 
-          </div>
-
-          {/* Сквозной нижний бар: 3 красивые круглые кнопки в ряд */}
-          <div className="flex justify-center gap-5 w-full mt-auto z-20 no-tilt pb-1">
-            <a href={CONTENT.waLink} target="_blank" rel="noopener noreferrer" className="w-12 h-12 shrink-0 bg-black/40 backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-emerald-900/30 transition-all active:scale-95 group relative overflow-hidden">
-               <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-               <MessageCircle className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform relative z-10" />
-            </a>
-            <a href={CONTENT.instLink} target="_blank" rel="noopener noreferrer" className="w-12 h-12 shrink-0 bg-black/40 backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-pink-900/30 transition-all active:scale-95 group relative overflow-hidden">
-               <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-               <InstagramIcon className="w-5 h-5 text-pink-400 group-hover:scale-110 transition-transform relative z-10" />
-            </a>
-            <a href="tel:+79990000000" className="w-12 h-12 shrink-0 bg-black/40 backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-rose-900/40 transition-all active:scale-95 group relative overflow-hidden">
-               <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-               <Phone className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform relative z-10" />
-            </a>
+            {/* Сквозной нижний бар: 3 красивые круглые кнопки в ряд */}
+            <div className="flex justify-center gap-[clamp(0.75rem,4cqw,1.25rem)] w-full mt-auto z-20 no-tilt pb-[clamp(0.125rem,1cqw,0.25rem)]">
+              <a href={ASSETS.waLink} target="_blank" rel="noopener noreferrer" className="w-[clamp(2rem,9cqw,3rem)] h-[clamp(2rem,9cqw,3rem)] shrink-0 bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-emerald-900/30 transition-all active:scale-95 group relative overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                 <MessageCircle className="w-[clamp(0.8rem,4cqw,1.25rem)] h-[clamp(0.8rem,4cqw,1.25rem)] text-emerald-400 group-hover:scale-110 transition-transform relative z-10" />
+              </a>
+              <a href={ASSETS.instLink} target="_blank" rel="noopener noreferrer" className="w-[clamp(2rem,9cqw,3rem)] h-[clamp(2rem,9cqw,3rem)] shrink-0 bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-pink-900/30 transition-all active:scale-95 group relative overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                 <InstagramIcon className="w-[clamp(0.8rem,4cqw,1.25rem)] h-[clamp(0.8rem,4cqw,1.25rem)] text-pink-400 group-hover:scale-110 transition-transform relative z-10" />
+              </a>
+              <a href={`tel:${ASSETS.phone}`} className="w-[clamp(2rem,9cqw,3rem)] h-[clamp(2rem,9cqw,3rem)] shrink-0 bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-md border border-rose-500/30 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:bg-rose-900/40 transition-all active:scale-95 group relative overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                 <Phone className="w-[clamp(0.8rem,4cqw,1.25rem)] h-[clamp(0.8rem,4cqw,1.25rem)] text-rose-300 group-hover:scale-110 transition-transform relative z-10" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -377,6 +466,8 @@ const App = () => {
   // Настройки цвета темы под Бьюти-сферу
   const glowColor = 'rgba(244,114,182,0.6)'; // Розовый
   const modalTheme = { bg: 'rgba(244,114,182,0.15)', border: 'rgba(244,114,182,0.3)', icon: 'text-pink-400' };
+
+  const t = TRANSLATIONS[lang] || TRANSLATIONS['RU'];
 
   // Параллакс фона
   useEffect(() => {
@@ -512,8 +603,8 @@ const App = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Моя цифровая визитка',
-          text: 'Привет! Вот моя визитка с контактами:',
+          title: t.shareTitle,
+          text: t.shareDesc,
           url: window.location.href,
         });
       } catch (err) {}
@@ -524,16 +615,16 @@ const App = () => {
 
   const downloadVCard = () => {
     let phoneStr = '';
-    if (CONTENT.waLink) {
-      const match = CONTENT.waLink.match(/\d+/);
+    if (ASSETS.waLink) {
+      const match = ASSETS.waLink.match(/\d+/);
       if (match) phoneStr = `+${match[0]}`;
     }
 
     const vcard = [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      `FN:${CONTENT.name1} ${CONTENT.name2}`,
-      `TITLE:${CONTENT.role}`,
+      `FN:${t.name1} ${t.name2}`,
+      `TITLE:${t.role}`,
       phoneStr ? `TEL;TYPE=CELL,VOICE:${phoneStr}` : '',
       phoneStr ? `URL;TYPE=WhatsApp:https://wa.me/${phoneStr.replace('+', '')}` : '',
       `URL:${typeof window !== 'undefined' ? window.location.href : ''}`,
@@ -557,22 +648,22 @@ const App = () => {
 
       {/* Параллакс-сферы (Тематические цвета Бьюти - Pink/Amber) */}
       <div 
-        className="fixed top-1/4 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[120px] pointer-events-none transition-transform duration-1000 ease-out"
+        className="hidden sm:block fixed top-1/4 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[120px] pointer-events-none transition-transform duration-1000 ease-out"
         style={{ transform: `translate(${bgOffset.x}px, ${bgOffset.y}px)` }}
       ></div>
       <div 
-        className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transition-transform duration-1000 ease-out"
+        className="hidden sm:block fixed bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transition-transform duration-1000 ease-out"
         style={{ transform: `translate(${bgOffset.x * 1.5}px, ${bgOffset.y * 1.5}px)` }}
       ></div>
 
       {/* ОСНОВНОЙ КОНТЕЙНЕР (отцентрирован идеально) */}
-      <div className="w-full flex flex-col items-center relative z-40">
+      <div className="flex-1 w-full flex items-center justify-center min-h-0 relative z-40">
         
         {/* Карточка */}
         <div 
           ref={cardRef}
-          className="relative z-10 w-full aspect-[1/1.6] sm:aspect-[1/1.5] cursor-pointer group animate-float touch-none"
-          style={{ perspective: '1500px', maxWidth: 'min(22rem, 85vw, 55vh)' }}
+          className="relative z-10 w-full aspect-[1/1.6] sm:aspect-[1/1.5] cursor-pointer group animate-float touch-none @container"
+          style={{ perspective: '1500px', maxWidth: 'min(26rem, 94vw, 52dvh)' }}
           onClick={handleFlip}
           onMouseMove={handlePointerMove}
           onMouseLeave={handlePointerLeave}
@@ -622,11 +713,12 @@ const App = () => {
               />
 
               {/* Компонент Визитки */}
-              <BeautyCard />
+              <BeautyCard lang={lang} />
 
               <div 
-                className="absolute inset-0 w-full h-full rounded-[2.5rem] pointer-events-none transition-opacity duration-300 card-backface-hidden"
+                className="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden pointer-events-none transition-opacity duration-300 card-backface-hidden"
                 style={{
+                  WebkitMaskImage: '-webkit-radial-gradient(white, black)', // 🍏 Safari fix
                   background: `radial-gradient(farthest-corner circle at ${glare.x}% ${glare.y}%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 80%)`,
                   opacity: glare.opacity,
                   mixBlendMode: 'overlay',
@@ -634,8 +726,9 @@ const App = () => {
                 }}
               />
               <div 
-                className="absolute inset-0 w-full h-full rounded-[2.5rem] pointer-events-none transition-opacity duration-300 card-backface-hidden"
+                className="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden pointer-events-none transition-opacity duration-300 card-backface-hidden"
                 style={{
+                  WebkitMaskImage: '-webkit-radial-gradient(white, black)', // 🍏 Safari fix
                   transform: 'rotateY(180deg) translateZ(0)',
                   background: `radial-gradient(farthest-corner circle at ${100 - glare.x}% ${glare.y}%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 80%)`,
                   opacity: glare.opacity,
@@ -646,58 +739,57 @@ const App = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* ПАНЕЛЬ КНОПОК ПОД ВИЗИТКОЙ */}
-        <div className="mt-8 sm:mt-10 flex items-center gap-3 sm:gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-2 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 relative">
-          <div className="flex items-center gap-0.5 px-1">
-            {['RU', 'AM', 'EN'].map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                className={`relative px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all duration-500 ${lang === l ? 'text-white' : 'text-white/40 hover:text-white/80'}`}
-              >
-                {lang === l && (
-                  <span className="absolute inset-0 bg-white/10 border border-white/20 rounded-full shadow-[inset_0_0_8px_rgba(255,255,255,0.1)] pointer-events-none"></span>
-                )}
-                <span className="relative z-10">{l}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="w-px h-6 bg-white/20 mx-1"></div>
-
-          <button
-            onClick={() => {
-              if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(15);
-              setShowShare(true);
-            }}
-            className="p-2.5 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
-          >
-            <QrCode className="w-5 h-5" />
-          </button>
-
-          <button
-            onClick={() => {
-              if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(15);
-              downloadVCard();
-            }}
-            className="p-2.5 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
-          >
-            <UserPlus className="w-5 h-5" />
-          </button>
+      {/* ПАНЕЛЬ КНОПОК ПОД ВИЗИТКОЙ (Фиксированная) */}
+      <div className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-[#181818]/95 sm:bg-white/5 sm:backdrop-blur-xl border border-white/10 p-1.5 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <div className="flex items-center gap-0.5 px-1">
+          {['RU', 'AM', 'EN'].map((l) => (
+            <button
+              key={l}
+              onClick={() => setLang(l)}
+              className={`relative px-2 py-1 rounded-full text-[9px] font-bold tracking-widest transition-all duration-500 ${lang === l ? 'text-white' : 'text-white/40 hover:text-white/80'}`}
+            >
+              {lang === l && (
+                <span className="absolute inset-0 bg-white/10 border border-white/20 rounded-full shadow-[inset_0_0_8px_rgba(255,255,255,0.1)] pointer-events-none"></span>
+              )}
+              <span className="relative z-10">{l}</span>
+            </button>
+          ))}
         </div>
 
+        <div className="w-px h-4 bg-white/20 mx-0.5"></div>
+
+        <button
+          onClick={() => {
+            if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(15);
+            setShowShare(true);
+          }}
+          className="p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
+        >
+          <QrCode className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={() => {
+            if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(15);
+            downloadVCard();
+          }}
+          className="p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
+        >
+          <UserPlus className="w-4 h-4" />
+        </button>
       </div>
 
       {/* МОДАЛЬНОЕ ОКНО ПОДЕЛИТЬСЯ */}
       {showShare && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200" 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#151515]/95 sm:bg-black/40 sm:backdrop-blur-sm transition-opacity animate-in fade-in duration-200" 
           onClick={() => setShowShare(false)}
         >
           <div 
-            className="backdrop-blur-3xl rounded-[2.5rem] p-6 sm:p-8 w-full max-w-sm flex flex-col items-center relative shadow-2xl animate-in zoom-in-95 duration-200 border" 
-            style={{ backgroundColor: modalTheme.bg, borderColor: modalTheme.border }}
+            className="bg-[#151515]/95 sm:bg-[var(--modal-bg)] sm:backdrop-blur-3xl rounded-[2.5rem] p-6 sm:p-8 w-full max-w-sm flex flex-col items-center relative shadow-2xl animate-in zoom-in-95 duration-200 border" 
+            style={{ '--modal-bg': modalTheme.bg, borderColor: modalTheme.border }}
             onClick={e => e.stopPropagation()}
           >
             <button 
@@ -711,8 +803,8 @@ const App = () => {
               <QrCode className={`w-6 h-6 ${modalTheme.icon}`} />
             </div>
             
-            <h3 className="text-xl font-bold text-white mb-2 tracking-wide">Поделиться визиткой</h3>
-            <p className="text-sm text-white/60 text-center mb-6 leading-relaxed">Дайте отсканировать QR-код или отправьте ссылку напрямую.</p>
+            <h3 className="text-xl font-bold text-white mb-2 tracking-wide">{t.shareTitle}</h3>
+            <p className="text-sm text-white/60 text-center mb-6 leading-relaxed">{t.shareDesc}</p>
             
             <div className="bg-white p-4 rounded-3xl mb-6 shadow-[0_0_40px_rgba(255,255,255,0.15)] flex items-center justify-center">
               <img 
@@ -728,14 +820,14 @@ const App = () => {
                 className="flex-1 bg-black/20 hover:bg-black/40 border border-white/10 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-colors text-sm"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                {copied ? 'Скопировано!' : 'Копировать'}
+                {copied ? t.copied : t.copy}
               </button>
               <button 
                 onClick={handleShare}
                 className="flex-1 bg-white/10 hover:bg-white/20 border border-white/10 text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-colors text-sm"
               >
                 <Share2 className="w-4 h-4" />
-                Отправить
+                {t.share}
               </button>
             </div>
           </div>
